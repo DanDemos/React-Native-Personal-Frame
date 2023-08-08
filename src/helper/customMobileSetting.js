@@ -2,9 +2,9 @@ const MobileSetting = {
   Drawer: true,
   CustomDrawer: false,
   BottomTab: true,
-  CustomBottomTab: false,
-  TopTab: true,
-  CustomTopTab: false,
+  CustomBottomTab: true,
+  // TopTab: true, Version 2
+  // CustomTopTab: false, Version 2
 }
 
 export default MobileSetting;

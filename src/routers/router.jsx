@@ -8,6 +8,8 @@ import { NavigationContainer } from "@react-navigation/native";
 // import { DrawerComponent } from './components'
 import { StackNavScreens } from "./router-config";
 import CustomDrawer from "../components/customDrawer/customDrawer";
+import CustomBottomTab from "../components/customBottomTab/customBottomTab";
+import { CustomDrawerNavigator } from "../components/customDrawer/customDrawer";
 import MobileSetting from "../helper/customMobileSetting";
 import { SafeAreaView, SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -29,35 +31,73 @@ const NavigationProvider = () => {
         onStateChange={async () => {
           const previousRouteName = routeNameRef.current;
           const currentRouteName = navigationRef.current.getCurrentRoute().name;
-
           routeNameRef.current = currentRouteName;
         }}>
-        <AppNavigation />
+        {
+          MobileSetting?.Drawer == true && MobileSetting?.BottomTab == true
+            ?
+            <DrawerNavigation />
+            :
+            MobileSetting?.Drawer == true && MobileSetting?.BottomTab == false
+              ?
+              <DrawerNavigation />
+              :
+              MobileSetting?.Drawer == false && MobileSetting?.BottomTab == true
+                ?
+                <BottomTabNavigator />
+                :
+                MobileSetting?.Drawer == false && MobileSetting?.BottomTab == false
+                  ?
+                  <MainStackNavigator />
+                  :
+                  <BottomTabNavigator />
+        }
       </NavigationContainer>
     </SafeAreaProvider>
   );
 };
 
-const AppNavigation = () => {
-  return (
-    <Stack.Navigator initialRouteName='Home Navigator' screenOptions={{ headerShown: false, animation: "none" }}>
-      <Stack.Screen name="Home Navigator" component={DrawerNavigation} />
-    </Stack.Navigator>
-  )
-}
-
 const DrawerNavigation = () => {
   return (
     MobileSetting?.CustomDrawer == false
       ?
-      <Drawer.Navigator
-        screenOptions={{ headerShown: false, drawerType: 'front' }}>
-        {StackNavScreens.map(item => <Drawer.Screen key={item.name} {...item} component={BottomTabNavigator} />)}
-      </Drawer.Navigator>
+      MobileSetting?.BottomTab == true
+        ?
+        MobileSetting?.CustomBottomTab == true
+          ?
+          <CustomDrawerNavigator />
+          :
+          <Drawer.Navigator
+            screenOptions={{ headerShown: false, drawerType: 'front' }}>
+            {
+              StackNavScreens.map(item => {
+                return <Drawer.Screen key={item.name} {...item} component={BottomTabNavigator} />
+              })
+            }
+          </Drawer.Navigator>
+        :
+        <Drawer.Navigator
+          screenOptions={{ headerShown: false, drawerType: 'front' }}>
+          {
+            StackNavScreens.map(item => {
+              return <Drawer.Screen key={item.name} {...item} component={MainStackNavigator} />
+            })
+          }
+        </Drawer.Navigator>
       :
       <Drawer.Navigator
         drawerContent={props => <CustomDrawer StackNavScreens={StackNavScreens} {...props} />}
         screenOptions={{ headerShown: false, drawerType: 'front' }}>
+        {MobileSetting?.BottomTab == false
+          ?
+          MobileSetting?.CustomBottomTab == true
+            ?
+            <CustomDrawerNavigator />
+            :
+            <Drawer.Screen name="FakeDrawerScreen" component={BottomTabNavigator} />
+          :
+          <Drawer.Screen name="FakeDrawerScreen" component={MainStackNavigator} />
+        }
       </Drawer.Navigator>
   );
 }
@@ -65,7 +105,7 @@ const DrawerNavigation = () => {
 const BottomTabNavigator = () => {
   return (
     <BottomTab.Navigator screenOptions={{ headerShown: false }}>
-      {StackNavScreens.map(item => <BottomTab.Screen key={item.name} {...item} component={TopTabNavigator} />) }
+      {StackNavScreens.map(item => <BottomTab.Screen key={item.name} {...item} />)}
     </BottomTab.Navigator>
   );
 }

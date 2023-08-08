@@ -1,7 +1,7 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
+import MobileSetting from '../../helper/customMobileSetting';
 
 const ContactPage = props => {
   const navigation = useNavigation()
@@ -18,7 +18,7 @@ const ContactPage = props => {
 
       <TouchableOpacity style={styles.button} onPress={_ => {
         console.log(navigation, "onCLick")
-        navigation?.openDrawer()
+        MobileSetting?.Drawer == true && navigation?.openDrawer()
       }}>
         <Text style={styles.buttonText}>Drawer Page</Text>
       </TouchableOpacity>
