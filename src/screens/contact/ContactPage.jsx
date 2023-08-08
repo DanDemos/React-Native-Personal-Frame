@@ -1,25 +1,15 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
-import callApi from '../../services/api/apiClient';
 import { useNavigation } from '@react-navigation/native';
 
-const signIn_data = {
-  login: '09989002021',
-  password: '123',
-};
 
-const handlePress = () => {
-  callApi('auth/signIn').withHeaders(signIn_data).loadingGroup('g').executeDispatch();
-};
-
-const HomePage = props => {
+const ContactPage = props => {
   const navigation = useNavigation()
-  console.log(navigation, "home navigation")
   return (
 
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Home Page</Text>
+        <Text style={styles.title}>Contact Page</Text>
       </View>
 
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Login')}>
@@ -32,12 +22,6 @@ const HomePage = props => {
       }}>
         <Text style={styles.buttonText}>Drawer Page</Text>
       </TouchableOpacity>
-
-      <TouchableOpacity style={styles.button} onPress={handlePress}>
-        <Text style={styles.buttonText}>Press Me</Text>
-      </TouchableOpacity>
-
-      
 
     </SafeAreaView>
   );
@@ -70,4 +54,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomePage;
+export default ContactPage;
