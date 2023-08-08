@@ -10,7 +10,6 @@ import { StackNavScreens } from "./router-config";
 import CustomDrawer from "../components/customDrawer/customDrawer";
 import CustomBottomTab from "../components/customBottomTab/customBottomTab";
 import { CustomDrawerNavigator } from "../components/customDrawer/customDrawer";
-import MobileSetting from "../helper/customMobileSetting";
 import { SafeAreaView, SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Stack = createNativeStackNavigator();
@@ -42,7 +41,7 @@ const NavigationProvider = () => {
 const DrawerNavigation = () => {
   return (
     <Drawer.Navigator
-      // drawerContent={props => <CustomDrawer StackNavScreens={StackNavScreens} name={item.name} />}
+      // drawerContent={props => <CustomDrawer StackNavScreens={StackNavScreens} {...props} />}
       screenOptions={{ headerShown: false, drawerType: 'front' }}>
       {StackNavScreens.map(item => <Drawer.Screen key={item.name} name={item.name} component={MainStackNavigator} />)}
     </Drawer.Navigator>
@@ -52,7 +51,7 @@ const DrawerNavigation = () => {
 const BottomTabNavigator = () => {
   return (
     <BottomTab.Navigator screenOptions={{ headerShown: false }}>
-      {StackNavScreens.map(item => <BottomTab.Screen key={item.name} name={item.name} />)}
+      {StackNavScreens.map(item => <BottomTab.Screen key={item.name} name={item.name} component={item.component} />)}
     </BottomTab.Navigator>
   );
 }
@@ -73,7 +72,7 @@ const MainStackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {
-        StackNavScreens.map(item => <Stack.Screen key={item.name} name={item.name} />)
+        StackNavScreens.map(item => <Stack.Screen key={item.name} name={item.name} component={item.component} />)
       }
     </Stack.Navigator>
   )
