@@ -33,25 +33,7 @@ const NavigationProvider = () => {
           const currentRouteName = navigationRef.current.getCurrentRoute().name;
           routeNameRef.current = currentRouteName;
         }}>
-        {
-          MobileSetting?.Drawer == true && MobileSetting?.BottomTab == true
-            ?
-            <DrawerNavigation />
-            :
-            MobileSetting?.Drawer == true && MobileSetting?.BottomTab == false
-              ?
-              <DrawerNavigation />
-              :
-              MobileSetting?.Drawer == false && MobileSetting?.BottomTab == true
-                ?
-                <BottomTabNavigator />
-                :
-                MobileSetting?.Drawer == false && MobileSetting?.BottomTab == false
-                  ?
-                  <MainStackNavigator />
-                  :
-                  <BottomTabNavigator />
-        }
+        <DrawerNavigation />
       </NavigationContainer>
     </SafeAreaProvider>
   );
@@ -59,53 +41,18 @@ const NavigationProvider = () => {
 
 const DrawerNavigation = () => {
   return (
-    MobileSetting?.CustomDrawer == false
-      ?
-      MobileSetting?.BottomTab == true
-        ?
-        MobileSetting?.CustomBottomTab == true
-          ?
-          <CustomDrawerNavigator />
-          :
-          <Drawer.Navigator
-            screenOptions={{ headerShown: false, drawerType: 'front' }}>
-            {
-              StackNavScreens.map(item => {
-                return <Drawer.Screen key={item.name} {...item} component={BottomTabNavigator} />
-              })
-            }
-          </Drawer.Navigator>
-        :
-        <Drawer.Navigator
-          screenOptions={{ headerShown: false, drawerType: 'front' }}>
-          {
-            StackNavScreens.map(item => {
-              return <Drawer.Screen key={item.name} {...item} component={MainStackNavigator} />
-            })
-          }
-        </Drawer.Navigator>
-      :
-      <Drawer.Navigator
-        drawerContent={props => <CustomDrawer StackNavScreens={StackNavScreens} {...props} />}
-        screenOptions={{ headerShown: false, drawerType: 'front' }}>
-        {MobileSetting?.BottomTab == false
-          ?
-          MobileSetting?.CustomBottomTab == true
-            ?
-            <CustomDrawerNavigator />
-            :
-            <Drawer.Screen name="FakeDrawerScreen" component={BottomTabNavigator} />
-          :
-          <Drawer.Screen name="FakeDrawerScreen" component={MainStackNavigator} />
-        }
-      </Drawer.Navigator>
-  );
+    <Drawer.Navigator
+      // drawerContent={props => <CustomDrawer StackNavScreens={StackNavScreens} name={item.name} />}
+      screenOptions={{ headerShown: false, drawerType: 'front' }}>
+      {StackNavScreens.map(item => <Drawer.Screen key={item.name} name={item.name} component={MainStackNavigator} />)}
+    </Drawer.Navigator>
+  )
 }
 
 const BottomTabNavigator = () => {
   return (
     <BottomTab.Navigator screenOptions={{ headerShown: false }}>
-      {StackNavScreens.map(item => <BottomTab.Screen key={item.name} {...item} />)}
+      {StackNavScreens.map(item => <BottomTab.Screen key={item.name} name={item.name} />)}
     </BottomTab.Navigator>
   );
 }
@@ -126,11 +73,10 @@ const MainStackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {
-        StackNavScreens.map(item => <Stack.Screen key={item.name} {...item} />)
+        StackNavScreens.map(item => <Stack.Screen key={item.name} name={item.name} />)
       }
     </Stack.Navigator>
   )
 }
-
 
 export default NavigationProvider;
