@@ -16,7 +16,7 @@ const ContactPage = props => {
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button} onPress={_ => {
-        console.log(navigation, "onCLick")
+        // console.log(navigation, "onCLick")
         navigation?.openDrawer()
       }}>
         <Text style={styles.buttonText}>Drawer Page</Text>

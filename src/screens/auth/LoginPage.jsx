@@ -12,7 +12,7 @@ const signIn_data = {
 
 const LoginPage = props => {
   const navigation = useNavigation()
-  console.log(navigation, "navigationnavigation")
+  // console.log(navigation, "navigationnavigation")
   const [loadingID_arr, setloadingID_arr] = useState([]);
   let b = {
     userid: "uid_112",

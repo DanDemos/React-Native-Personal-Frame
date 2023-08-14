@@ -5,11 +5,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 // import { View, Text, Button, SafeAreaView } from "react-native";
-// import { DrawerComponent } from './components'
-import { StackNavScreens } from "./router-config";
 import CustomDrawer from "../components/customDrawer/customDrawer";
-import CustomBottomTab from "../components/customBottomTab/customBottomTab";
-import { CustomDrawerNavigator } from "../components/customDrawer/customDrawer";
+import { StackNavScreens } from "./router-config";
 import { SafeAreaView, SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Stack = createNativeStackNavigator();
@@ -41,9 +38,33 @@ const NavigationProvider = () => {
 const DrawerNavigation = () => {
   return (
     <Drawer.Navigator
-      // drawerContent={props => <CustomDrawer StackNavScreens={StackNavScreens} {...props} />}
-      screenOptions={{ headerShown: false, drawerType: 'front' }}>
-      {StackNavScreens.map(item => <Drawer.Screen key={item.name} name={item.name} component={MainStackNavigator} />)}
+      drawerContent={props => <CustomDrawer StackNavScreens={StackNavScreens} {...props} />}
+      screenOptions={{
+        headerShown: false,
+        drawerType: 'front', 
+        // drawerLabelStyle: { marginLeft: -25 }, 
+        drawerActiveBackgroundColor: "red",
+        drawerActiveTintColor: "white",
+        drawerInactiveTintColor: "blue"
+      }}>
+      <Drawer.Screen
+        key={StackNavScreens[0].name}
+        name={StackNavScreens[0].name}
+        component={StackNavScreens[0].component}
+        options={{ drawerIcon: (color) => StackNavScreens[0]?.icon ? StackNavScreens[0]?.icon(color) : null }}
+      />
+      <Drawer.Screen
+        key={StackNavScreens[1].name}
+        name={StackNavScreens[1].name}
+        component={StackNavScreens[1].component}
+        options={{ drawerIcon: (color) => StackNavScreens[1]?.icon ? StackNavScreens[1]?.icon(color) : null }}
+      />
+      <Drawer.Screen
+        key={StackNavScreens[2].name}
+        name={StackNavScreens[2].name}
+        component={StackNavScreens[2].component}
+        options={{ drawerIcon: (color) => StackNavScreens[2]?.icon ? StackNavScreens[1]?.icon(color) : null }}
+      />
     </Drawer.Navigator>
   )
 }

@@ -14,7 +14,7 @@ const handlePress = () => {
 
 const HomePage = props => {
   const navigation = useNavigation()
-  console.log(navigation, "home navigation")
+  // console.log(navigation, "home navigation")
   return (
 
     <SafeAreaView style={styles.container}>
@@ -27,7 +27,7 @@ const HomePage = props => {
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button} onPress={_ => {
-        console.log(navigation, "onCLick")
+        // console.log(navigation, "onCLick")
         navigation?.openDrawer()
       }}>
         <Text style={styles.buttonText}>Drawer Page</Text>
