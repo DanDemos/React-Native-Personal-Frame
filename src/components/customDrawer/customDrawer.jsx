@@ -4,7 +4,6 @@ import { ScrollView } from "react-native";
 import { IconComp } from "../icon/icon";
 import { DrawerContentScrollView, DrawerItemList } from "@react-navigation/drawer";
 export const CustomDrawer = props => {
-  console.log(props, "propsprops")
   return (
     <>
       <DrawerContentScrollView style={{ backgroundColor: "lightgreen" }} {...props}>

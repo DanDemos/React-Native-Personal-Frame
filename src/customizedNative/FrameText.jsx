@@ -80,8 +80,6 @@ export const FrameText = props => {
     };
   }
 
-  console.log(modifiedProps, "modifiedProps");
-
   return (
     <Text
       // lang={props.lang || lang || 'en'}
