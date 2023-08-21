@@ -2,6 +2,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import callApi from '../../services/api/apiClient';
 import { useNavigation } from '@react-navigation/native';
+import { FrameText } from '../../customizedNative/FrameText';
 
 const signIn_data = {
   login: '09989002021',
@@ -34,7 +35,7 @@ const HomePage = props => {
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button} onPress={handlePress}>
-        <Text style={styles.buttonText}>Press Me</Text>
+        <FrameText style={styles.buttonText} color="RGB(0, 255, 0)">Press Me Ok?</FrameText>
       </TouchableOpacity>
 
       
