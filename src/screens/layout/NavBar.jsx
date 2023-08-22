@@ -7,11 +7,8 @@ import { SafeAreaView } from 'react-native';
 import { IconComp } from 'components/icon/icon';
 
 const NavBar = props => {
-  const navigation = useNavigation()
-  // console.log(navigation, "home navigation")
   return (
 
-    // <SafeAreaView style={{ backgroundColor: "green", position: "relative" }}>
     <View style={{ backgroundColor: "red", width: "100%", height: 60, paddingLeft: 10, paddingRight: 10 }}>
       <View style={{ backgroundColor: "purple", flex: 1, flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
 

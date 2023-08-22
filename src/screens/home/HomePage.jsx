@@ -6,6 +6,8 @@ import { FrameText } from '../../customizedNative/FrameText';
 // import { SafeAreaView } from 'react-native';
 import NavBar from 'screens/layout/NavBar';
 import BottomBar from 'screens/layout/BottomBar';
+import { ScrollView } from 'react-native';
+import CustomContainer from 'screens/layout/CustomContainer';
 
 const { height } = Dimensions.get('screen');
 
@@ -20,69 +22,37 @@ const handlePress = () => {
 
 const HomePage = props => {
   const navigation = useNavigation()
-  // console.log(navigation, "home navigation")
   return (
-
-    <SafeAreaView style={{ backgroundColor: "green", marginTop: StatusBar.currentHeight, flex: 1 }}>
-      {/* <SafeAreaView style={{ position: "absolute", paddingTop: Platform.OS === "ios" ? 60 : 0, backgroundColor: "#f8f9fa", width: "100%" }}> */}
-
-      <View style={styles.container}>
-        <NavBar />
-        <View style={styles.body}>
-          <View style={styles.header}>
-            <Text style={styles.title}>Home Page</Text>
-          </View>
-
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Login')}>
-            <Text style={styles.buttonText}>Login Page</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.button} onPress={_ => {
-            // console.log(navigation, "onCLick")
-            navigation?.openDrawer()
-          }}>
-            <Text style={styles.buttonText}>Drawer Page</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.button} onPress={handlePress}>
-            <FrameText style={styles.buttonText} color="RGB(0, 255, 0)">Press Me Ok?</FrameText>
-          </TouchableOpacity>
-        </View>
-        <BottomBar />
-
-
-
-      </View>
-
-    </SafeAreaView>
+    <CustomContainer children = {ChildComponent()} />
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    // flex:1,
-    backgroundColor: "skyblue",
-    // position: "relative",
-    // backgroundColor: 'skyblue',
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    // paddingTop: Platform.OS === "ios" ? 60 : 0,
-    // width: "100%",
-    // height: height-130
+const ChildComponent = props => {
+  return (
+    <>
+      <View style={styles.header}>
+        <Text style={styles.title}>Home Page</Text>
+      </View>
 
-    margin: 0,
-    padding: 0,
-    display: "flex",
-    flexDirection: "column",
-    minHeight: height - 60,
-  },
-  body: {
-    flex: 1,
-    backgroundColor: "skyblue",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Login')}>
+        <Text style={styles.buttonText}>Login Page</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button} onPress={_ => {
+        // console.log(navigation, "onCLick")
+        navigation?.openDrawer()
+      }}>
+        <Text style={styles.buttonText}>Drawer Page</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button} onPress={handlePress}>
+        <FrameText style={styles.buttonText} color="RGB(0, 255, 0)">Press Me Ok?</FrameText>
+      </TouchableOpacity>
+    </>
+  )
+}
+
+const styles = StyleSheet.create({
   header: {
     marginBottom: 20,
   },
@@ -102,6 +72,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-});
+})
 
 export default HomePage;
