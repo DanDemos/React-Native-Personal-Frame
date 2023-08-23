@@ -28,6 +28,7 @@ const HomePage = props => {
 };
 
 const ChildComponent = props => {
+  const navigation = useNavigation()
   return (
     <>
       <View style={styles.header}>
