@@ -24,9 +24,14 @@ const NavBar = props => {
 };
 
 const LeftSide = props => {
+  const navigation = useNavigation()
+
   return (
     <View>
-      <IconComp icon name="menu" type="entypo" size={40} />
+      <TouchableOpacity onPress={() => navigation?.openDrawer()}>
+        <IconComp icon name="menu" type="entypo" size={40} />
+
+      </TouchableOpacity>
     </View>
   )
 }
