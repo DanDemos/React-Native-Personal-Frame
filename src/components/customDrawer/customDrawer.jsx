@@ -8,9 +8,9 @@ export const CustomDrawer = props => {
     <>
       <DrawerContentScrollView style={{ backgroundColor: "lightgreen" }} {...props}>
         <Text style={{ textAlign: "center", backgroundColor: "#ccc" }}>Welcome Dan</Text>
-        <View style={{ flex: 1, backgroundColor: "pink", paddingTop: 10 }}>
+        <ScrollView style={{ flexGrow: 1, backgroundColor: "pink", paddingTop: 10 }}>
           <DrawerItemList {...props} />
-        </View>
+        </ScrollView>
       </DrawerContentScrollView>
 
       <SafeAreaView style={{backgroundColor: "yellow"}}>
