@@ -1,4 +1,4 @@
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { View, Text, StyleSheet, TouchableOpacity, Alert, Dimensions, StatusBar } from 'react-native';
 import { FrameText } from '../../customizedNative/FrameText';
 // import { SafeAreaView } from 'react-native';
@@ -9,9 +9,9 @@ import { ScrollView } from 'react-native';
 const { height } = Dimensions.get('screen');
 
 const CustomContainer = props => {
-  console.log(props, "child of CustomContainer")
+  const insets = useSafeAreaInsets();
   return (
-    <SafeAreaView style={{ backgroundColor: "green", marginTop: StatusBar.currentHeight, flex: 1 }}>
+    <SafeAreaView style={{ backgroundColor: "green", flex: 1, paddingBottom: Math.max(insets.bottom, 16)}}>
       <View style={styles.container}>
 
         <NavBar />
