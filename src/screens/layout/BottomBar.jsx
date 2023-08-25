@@ -9,7 +9,7 @@ import { IconComp } from 'components/icon/icon';
 const BottomBar = props => {
   return (
 
-    <View style={{ backgroundColor: "red", width: "100%", height: 60, paddingLeft: 10, paddingRight: 10 }}>
+    <View style={{ backgroundColor: "red", width: "100%", height: 80, paddingLeft: 10, paddingRight: 10 }}>
       <View style={{ backgroundColor: "rgba(255, 0, 255, 0.2)", flex: 1, flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
 
         <LeftSide />
@@ -24,7 +24,15 @@ const BottomBar = props => {
 const LeftSide = props => {
   return (
     <View>
-      <IconComp icon name="menu" type="entypo" size={40} />
+      <View style={{ flex: 1, flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+
+        <IconComp icon name="home" type="awesome" size={40} />
+
+        <Text style={{ fontSize: 12, }}>
+          Home
+        </Text>
+
+      </View>
     </View>
   )
 }
@@ -32,9 +40,15 @@ const LeftSide = props => {
 const Center = props => {
   return (
     <View>
-      <Text>
-        Hello World
-      </Text>
+      <View style={{ flex: 1, flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+
+        <IconComp icon name="login" type="entypo" size={40} />
+
+        <Text style={{ fontSize: 12, }}>
+          Login
+        </Text>
+
+      </View>
     </View>
   )
 }
@@ -42,9 +56,15 @@ const Center = props => {
 const RightSide = props => {
   return (
     <View>
-      <Text>
-        Hello World
-      </Text>
+      <View style={{ flex: 1, flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+
+        <IconComp icon name="menu" type="entypo" size={40} />
+
+        <Text style={{ fontSize: 12, }}>
+          Logout
+        </Text>
+
+      </View>
     </View>
   )
 }

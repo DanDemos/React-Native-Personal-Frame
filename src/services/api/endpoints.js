@@ -27,4 +27,5 @@ export const endpoints = Object.freeze({
     },
   },
   persistSlice: {},
+  myNonApiReduxSlice: {},
 });

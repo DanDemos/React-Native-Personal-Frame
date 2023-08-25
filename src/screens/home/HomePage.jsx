@@ -30,7 +30,7 @@ const HomePage = props => {
 const ChildComponent = props => {
   const navigation = useNavigation()
   return (
-    <>
+    <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Home Page</Text>
       </View>
@@ -49,11 +49,20 @@ const ChildComponent = props => {
       <TouchableOpacity style={styles.button} onPress={handlePress}>
         <FrameText style={styles.buttonText} color="RGB(0, 255, 0)">Press Me Ok?</FrameText>
       </TouchableOpacity>
-    </>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
+  container:{
+    flex: 1,
+    margin: 0,
+    padding: 0,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   header: {
     marginBottom: 20,
   },

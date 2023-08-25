@@ -6,7 +6,7 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import { NavigationContainer } from "@react-navigation/native";
 // import { View, Text, Button, SafeAreaView } from "react-native";
 import CustomDrawer from "../components/customDrawer/customDrawer";
-import { StackNavScreens } from "./router-config";
+import { StackNavScreens } from "./screen-config";
 import { SafeAreaView, SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Stack = createNativeStackNavigator();

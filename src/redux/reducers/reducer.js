@@ -16,7 +16,7 @@ export const createApiThunk = (thunkName, payload, loadingData) =>
     thunkAPI.dispatch(loadingSlice.actions.setLoading(loadingData));
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 100000));
       let response = await callAxios(payload);
 
       if (thunkName === token_endpoint) {
