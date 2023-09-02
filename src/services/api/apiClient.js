@@ -2,12 +2,14 @@ import { createApiThunk } from "../../redux/reducers/reducer";
 import { dispatch } from "../../redux/util/dispatchStore";
 import { state } from "../../redux/util/getStore";
 import { endpoints } from "./endpoints";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import storage from "redux-persist/lib/storage";
 import { GenerateID } from "../../redux/util/GenerateID";
 import { token_endpoint } from "../../helper/setAccessToken";
 import { loadingSlice } from "../../redux/reducers/reducer";
 import callAxios from "./axios";
 import { token_key } from "../../helper/setAccessToken";
+import { AccessTokenSlice } from "../../redux/reducers/reducer";
+import { FindAccessToken } from "../../helper/setAccessToken";
 
 const callApi = (apiName) => {
   let uniqueAPI_id = null;
@@ -27,7 +29,6 @@ const callApi = (apiName) => {
   let segment = null;
   let headers = null;
   let body = null;
-  let keyparameter = null;
   let params = null;
   let group_name = null;
   let missing_AccessToken = false;
@@ -35,17 +36,6 @@ const callApi = (apiName) => {
   const apiCall = {
     withSegment: (segmentData) => {
       segment = segmentData;
-      return apiCall;
-    },
-    withKeyParameter: (keyparameterData) => {
-      for (const key in keyparameterData) {
-        if (typeof keyparameterData[key] == 'number' || typeof keyparameterData[key] == 'string' || Array.isArray(keyparameterData[key]) == false) {
-          if (keyparameter == null) {
-            keyparameter = {}
-          }
-          keyparameter[key] = keyparameterData[key]
-        }
-      }
       return apiCall;
     },
     withParam: (paramData) => {
@@ -71,13 +61,15 @@ const callApi = (apiName) => {
       ) {
         headers = headers
           ? {
-            ...headers,
-            [token_key]: state("AccessToken"),
-          }
+              ...headers,
+              [token_key]: state("AccessToken"),
+            }
           : { [token_key]: state("AccessToken") };
       } else if (endpoint?.token === "require") {
+        console.log(
+          `User needs to login. ${endpointKey} API call was terminated.`
+        );
         missing_AccessToken = true;
-        throw new Error(`User needs to login. ${endpointKey} API call was terminated.`)
       }
       return apiCall;
     },
@@ -86,7 +78,6 @@ const callApi = (apiName) => {
       const payload = {
         endpoint,
         segment,
-        keyparameter,
         params,
         headers,
         body,
@@ -94,20 +85,20 @@ const callApi = (apiName) => {
 
       uniqueAPI_id = GenerateID();
       const loadingData = { uniqueAPI_id, group_name };
-
       dispatch(loadingSlice.actions.setLoading(loadingData));
       const res = await callAxios(payload);
+      if(apiName == token_endpoint){
+        dispatch(AccessTokenSlice.actions.setAccessToken(FindAccessToken(res)))
+      }
       dispatch(loadingSlice.actions.setLoading(loadingData));
       return res;
     },
     executeDispatch: () => {
-
       if (missing_AccessToken) return;
 
       const payload = {
         endpoint,
         segment,
-        keyparameter,
         params,
         headers,
         body,
@@ -116,8 +107,8 @@ const callApi = (apiName) => {
       const loadingData = { uniqueAPI_id, group_name };
 
       const getLocalStorage = async (apiGroup, endpointKey) => {
-        const localstorage = await AsyncStorage.getItem("persist:root");
-        endpointKey = endpointKey;
+        const localstorage = await storage.getItem("persist:root");
+        endpointKey = endpointKey + "_data";
         if (localstorage) {
           const parsedLocalStorage = JSON.parse(localstorage);
           const check_data = parsedLocalStorage[apiGroup];
@@ -126,7 +117,7 @@ const callApi = (apiName) => {
             endpointData = JSON.parse(check_data)?.[endpointKey];
           }
 
-          if (endpointData && endpointData.data.expireDate) {
+          if (endpointData && endpointData.expireDate) {
             const currentDate = new Date();
             const expireDate = new Date(endpointData.expireDate);
             if (currentDate > expireDate) {
@@ -140,9 +131,7 @@ const callApi = (apiName) => {
               );
             }
           } else {
-
             const asyncThunk = createApiThunk(thunkName, payload, loadingData);
-
             dispatch(asyncThunk());
           }
         } else {
