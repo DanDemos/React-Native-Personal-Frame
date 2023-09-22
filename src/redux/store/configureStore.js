@@ -3,13 +3,14 @@ import { persistReducer, persistStore } from 'redux-persist';
 import { combineReducers } from 'redux';
 import thunk from 'redux-thunk';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { slice, loadingSlice, AccessTokenSlice } from '../reducers/reducer';
+import { slice, loadingSlice, AccessTokenSlice, ExpireAlertBox } from '../reducers/reducer';
 import CustomSlice  from '../../helper/customSlice';
 import whitelist_arr from '../../helper/persist_whitelist'
 
 // Combine the reducers from the 'slice' object
 const obj = {
   [AccessTokenSlice.name]: AccessTokenSlice.reducer,
+  [ExpireAlertBox.name]: ExpireAlertBox.reducer,
   ...Object.fromEntries(Object.entries(slice).map(([key, { reducer }]) => [key, reducer])),
   ...Object.fromEntries(Object.entries(CustomSlice).map(([key, { reducer }]) => [key, reducer])),
   [loadingSlice.name]: loadingSlice.reducer,

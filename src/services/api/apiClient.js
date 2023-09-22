@@ -2,7 +2,7 @@ import { createApiThunk } from "../../redux/reducers/reducer";
 import { dispatch } from "../../redux/util/dispatchStore";
 import { state } from "../../redux/util/getStore";
 import { endpoints } from "./endpoints";
-import storage from "redux-persist/lib/storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GenerateID } from "../../redux/util/GenerateID";
 import { token_endpoint } from "../../helper/setAccessToken";
 import { loadingSlice } from "../../redux/reducers/reducer";
@@ -30,6 +30,7 @@ const callApi = (apiName) => {
   let headers = null;
   let body = null;
   let params = null;
+  let keyparameter = null;
   let group_name = null;
   let missing_AccessToken = false;
 
@@ -118,7 +119,7 @@ const callApi = (apiName) => {
       const loadingData = { uniqueAPI_id, group_name };
 
       const getLocalStorage = async (apiGroup, endpointKey) => {
-        const localstorage = await storage.getItem("persist:root");
+        const localstorage = await AsyncStorage.getItem("persist:root");
         endpointKey = endpointKey + "_data";
         if (localstorage) {
           const parsedLocalStorage = JSON.parse(localstorage);

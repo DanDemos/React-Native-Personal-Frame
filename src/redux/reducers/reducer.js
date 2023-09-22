@@ -16,8 +16,17 @@ export const createApiThunk = (thunkName, payload, loadingData) =>
     thunkAPI.dispatch(loadingSlice.actions.setLoading(loadingData));
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 100000));
+      await new Promise((resolve) => setTimeout(resolve, 100));
       let response = await callAxios(payload);
+
+      if (response?.status == "fail") {
+        if (response?.error == "access token is expired or invalid") {
+          console.log(thunkName, "it is in removeAccessToken")
+          thunkAPI.dispatch(AccessTokenSlice.actions.removeAccessToken());
+          thunkAPI.dispatch(ExpireAlertBox.actions.setExpireAlertBox(true));
+          // window.location.reload()
+        }
+      }
 
       if (thunkName === token_endpoint) {
         thunkAPI.dispatch(
@@ -27,6 +36,7 @@ export const createApiThunk = (thunkName, payload, loadingData) =>
 
       if (endpoint?.res_modifier) {
         response = endpoint.res_modifier(response);
+        // console.log(response, "endpoint?.res_modifier");
       }
 
       if (Number(endpoint?.expire_in > 0)) {
@@ -57,6 +67,28 @@ Object.entries(endpoints).forEach(([key]) => {
     reducers: customReducer,
     extraReducers: (builder) => {
       builder
+        // .addMatcher(isPendingAction(`${key}/`), (state, action) => {
+        //   if (state[`${action.type.split("/")[1]}`]) {
+        //     return {
+        //       ...state,
+        //       [`${action.type.split("/")[1]}`]: {
+        //         data:
+        //           state[`${action.type.split("/")[1]}`] == "object"
+        //             ? { ...state[`${action.type.split("/")[1]}`] }
+        //             : state[`${action.type.split("/")[1]}`],
+        //         frame_status: "loading",
+        //       },
+        //     };
+        //   } else {
+        //     return {
+        //       ...state,
+        //       [`${action.type.split("/")[1]}`]: {
+        //         ...state[`${action.type.split("/")[1]}`],
+        //         frame_status: "loading",
+        //       },
+        //     };
+        //   }
+        // })
         .addMatcher(isPendingAction(`${key}/`), (state, action) => ({
           ...state,
           [`${action.type.split("/")[1]}`]: {
@@ -122,6 +154,22 @@ export const AccessTokenSlice = createSlice({
     setAccessToken: (state, action) => {
       return action.payload;
     },
+    removeAccessToken: (state, action) => {
+      return {};
+    },
+  },
+});
+
+export const ExpireAlertBox = createSlice({
+  name: "ExpireAlertBox",
+  initialState: false,
+  reducers: {
+    setExpireAlertBox: (state, action) => {
+      return action.payload;
+    },
+    removeExpireAlertBox: (state, action) => {
+      return {};
+    },
   },
 });
 
@@ -129,5 +177,6 @@ export default {
   slice,
   loadingSlice,
   AccessTokenSlice,
+  ExpireAlertBox,
   createApiThunk,
 };

@@ -4,7 +4,6 @@ export const customReducer = {
     return state;
   },
   clearSliceElement: (state, action) => {
-    // console.log(action?.payload, "sheet");
     state[action?.payload] = {};
     return state;
   },
@@ -12,7 +11,5 @@ export const customReducer = {
     return state;
   },
 };
-
-// console.log(customReducer, "customReducer")
 
 export default customReducer;
