@@ -91,6 +91,7 @@ const callApi = (apiName) => {
         endpoint,
         segment,
         params,
+        keyparameter,
         headers,
         body,
       };
@@ -119,7 +120,7 @@ const callApi = (apiName) => {
       const loadingData = { uniqueAPI_id, group_name };
 
       const getLocalStorage = async (apiGroup, endpointKey) => {
-        const localstorage = await AsyncStorage.getItem("persist:root");
+        const localstorage = await storage.getItem("persist:root");
         endpointKey = endpointKey + "_data";
         if (localstorage) {
           const parsedLocalStorage = JSON.parse(localstorage);
