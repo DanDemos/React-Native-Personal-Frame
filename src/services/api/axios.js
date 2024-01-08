@@ -58,7 +58,7 @@ const callAxios = async (payload) => {
         // The request was made and the server responded with a status code
         // console.log(error.response.status);
         // console.log(error.response.data);
-        throw new Error(error.response.data);
+        throw new Error(JSON.stringify(error.response.data));
       } else if (error.request) {
         // The request was made but no response was received
         // console.log(error.request);
