@@ -99,12 +99,19 @@ const callApi = (apiName) => {
       uniqueAPI_id = GenerateID();
       const loadingData = { uniqueAPI_id, group_name };
       dispatch(loadingSlice.actions.setLoading(loadingData));
-      const res = await callAxios(payload);
-      if(apiName == token_endpoint){
-        dispatch(AccessTokenSlice.actions.setAccessToken(FindAccessToken(res)))
+      
+      try{
+        const res = await callAxios(payload);
+        if (apiName == token_endpoint) {
+          dispatch(AccessTokenSlice.actions.setAccessToken(FindAccessToken(res)));
+        }
+        dispatch(loadingSlice.actions.setLoading(loadingData));
+        return res;
       }
-      dispatch(loadingSlice.actions.setLoading(loadingData));
-      return res;
+      catch(e){
+        return e;
+      }
+      
     },
     executeDispatch: () => {
       if (missing_AccessToken) return;
