@@ -1,10 +1,18 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { persistReducer, persistStore } from 'redux-persist';
+import {
+  persistReducer, persistStore,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist';
 import { combineReducers } from 'redux';
 import thunk from 'redux-thunk';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { slice, loadingSlice, AccessTokenSlice, ExpireAlertBox } from '../reducers/reducer';
-import CustomSlice  from '../../helper/customSlice';
+import CustomSlice from '../../helper/customSlice';
 import whitelist_arr from '../../helper/persist_whitelist'
 
 // Combine the reducers from the 'slice' object
@@ -34,7 +42,13 @@ const persistedReducer = persistReducer(persistConfig, rootReducers);
 // Create the Redux store
 export const store = configureStore({
   reducer: persistedReducer, // Set the root reducer as the persisted reducer
-  middleware: [thunk], // Apply Redux thunk middleware
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
+  // Apply Redux thunk middleware
 });
 
 // Create the persisted store
