@@ -8,10 +8,10 @@ export const API_URLs = {
 
 export const endpoints = Object.freeze({
   auth: {
-    signIn: {
+    login: {
       method: "get",
       endpoint: "api/auth/token",
-      res_modifier: res_modifiers_config.getAccessToken,
+      // res_modifier: res_modifiers_config.getAccessToken,
       // token: "optional", // require, optional
       // expire_in: 10
     },

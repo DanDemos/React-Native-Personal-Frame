@@ -11,13 +11,13 @@ import CustomContainer from 'screens/layout/CustomContainer';
 
 const { height } = Dimensions.get('screen');
 
-const signIn_data = {
+const Login_data = {
   login: '09989002021',
   password: '123',
 };
 
 const handlePress = () => {
-  callApi('auth/signIn').withHeaders(signIn_data).loadingGroup('g').executeDispatch();
+  callApi('auth/login').withHeaders(Login_data).loadingGroup('g').executeDispatch();
 };
 
 const HomePage = props => {

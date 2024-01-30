@@ -21,17 +21,17 @@ const LoginPage = props => {
   };
   let hello
   async function login() {
-    callApi('auth/signIn').withHeaders(signIn_data).withKeyParameter(b).loadingGroup(1).executeDispatch();
-    // callApi('auth/signIn').withHeaders(signIn_data).loadingGroup('g').execute();
-    // callApi('auth/signIn').withHeaders(signIn_data).loadingGroup('g').execute();
-    // callApi('auth/signIn').withHeaders(signIn_data).execute().then((res) => { setloadingID_arr(res) });
-    // const e = callApi('auth/signIn').withHeaders(signIn_data).loadingGroup('g').executeDispatch();
+    callApi('auth/login').withHeaders(signIn_data).withKeyParameter(b).loadingGroup(1).executeDispatch();
+    // callApi('auth/login').withHeaders(signIn_data).loadingGroup('g').execute();
+    // callApi('auth/login').withHeaders(signIn_data).loadingGroup('g').execute();
+    // callApi('auth/login').withHeaders(signIn_data).execute().then((res) => { setloadingID_arr(res) });
+    // const e = callApi('auth/login').withHeaders(signIn_data).loadingGroup('g').executeDispatch();
   }
   function login2() {
-    callApi('auth/signIn').withHeaders(signIn_data).loadingGroup('g').execute();
-    callApi('auth/signIn').withHeaders(signIn_data).loadingGroup('g').execute();
-    callApi('auth/signIn').withHeaders(signIn_data).loadingGroup('g').execute();
-    callApi('auth/signIn').withHeaders(signIn_data).loadingGroup('g').execute();
+    callApi('auth/login').withHeaders(signIn_data).loadingGroup('g').execute();
+    callApi('auth/login').withHeaders(signIn_data).loadingGroup('g').execute();
+    callApi('auth/login').withHeaders(signIn_data).loadingGroup('g').execute();
+    callApi('auth/login').withHeaders(signIn_data).loadingGroup('g').execute();
   }
 
   return (
