@@ -21,7 +21,7 @@ export const createApiThunk = (thunkName, payload, loadingData) =>
 
       if (response?.status == "fail") {
         if (response?.error == "access token is expired or invalid") {
-          console.log(thunkName, "it is in removeAccessToken")
+          // console.log(thunkName, "it is in removeAccessToken")
           thunkAPI.dispatch(AccessTokenSlice.actions.removeAccessToken());
           thunkAPI.dispatch(ExpireAlertBox.actions.setExpireAlertBox(true));
           // window.location.reload()
