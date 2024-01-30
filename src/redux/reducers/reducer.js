@@ -149,13 +149,18 @@ export const loadingSlice = createSlice({
 
 export const AccessTokenSlice = createSlice({
   name: "AccessToken",
-  initialState: INITIAL_STATE,
+  initialState: "",
   reducers: {
     setAccessToken: (state, action) => {
-      return action.payload;
+      if (action.payload) {
+        return action.payload;
+      }
+      else {
+        return ""
+      }
     },
     removeAccessToken: (state, action) => {
-      return {};
+      return "";
     },
   },
 });
@@ -180,3 +185,4 @@ export default {
   ExpireAlertBox,
   createApiThunk,
 };
+
