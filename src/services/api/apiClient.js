@@ -1,15 +1,15 @@
-import {createApiThunk} from '../../redux/reducers/reducer';
-import {dispatch} from '../../redux/util/dispatchStore';
-import {selectStore} from '../../redux/util/selectStore';
-import {endpoints} from './endpoints';
+import { createApiThunk } from '../../redux/reducers/reducer';
+import { dispatch } from '../../redux/util/dispatchStore';
+import { selectStore } from '../../redux/util/selectStore';
+import { endpoints } from './endpoints';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {GenerateID} from '../../redux/util/GenerateID';
-import {token_endpoint} from '../../helper/setAccessToken';
-import {loadingSlice} from '../../redux/reducers/reducer';
+import { GenerateID } from '../../redux/util/GenerateID';
+import { token_endpoint } from '../../helper/setAccessToken';
+import { loadingSlice } from '../../redux/reducers/reducer';
 import callAxios from './axios';
-import {token_key} from '../../helper/setAccessToken';
-import {AccessTokenSlice} from '../../redux/reducers/reducer';
-import {FindAccessToken} from '../../helper/setAccessToken';
+import { token_key } from '../../helper/setAccessToken';
+import { AccessTokenSlice, ExpireAlertBox } from '../../redux/reducers/reducer';
+import { FindAccessToken } from '../../helper/setAccessToken';
 
 const callApi = apiName => {
   let uniqueAPI_id = null;
@@ -77,14 +77,11 @@ const callApi = apiName => {
       ) {
         headers = headers
           ? {
-              ...headers,
-              [token_key]: selectStore('AccessToken'),
-            }
-          : {[token_key]: selectStore('AccessToken')};
+            ...headers,
+            [token_key]: selectStore('AccessToken'),
+          }
+          : { [token_key]: selectStore('AccessToken') };
       } else if (endpoint?.token === 'require') {
-        console.log(
-          `User needs to login. ${endpointKey} API call was terminated.`,
-        );
         missing_AccessToken = true;
       }
       return apiCall;
@@ -101,15 +98,32 @@ const callApi = apiName => {
       };
 
       uniqueAPI_id = GenerateID();
-      const loadingData = {uniqueAPI_id, group_name};
+      const loadingData = { uniqueAPI_id, group_name };
+
       dispatch(loadingSlice.actions.setLoading(loadingData));
 
       try {
-        const res = await callAxios(payload);
+        let res = await callAxios(payload);
         if (apiName == token_endpoint) {
           dispatch(
             AccessTokenSlice.actions.setAccessToken(FindAccessToken(res)),
           );
+        }
+
+        if (res?.status == "fail") {
+          if (res?.error == "access token is expired or invalid") {
+            dispatch(AccessTokenSlice.actions.removeAccessToken());
+            dispatch(ExpireAlertBox.actions.setExpireAlertBox(true));
+          }
+        }
+        if (endpoint?.res_modifier) {
+          res = endpoint.res_modifier(res);
+        }
+        if (Number(endpoint?.expire_in > 0)) {
+          const currentDate = new Date();
+          const expireDate = new Date();
+          expireDate.setDate(currentDate.getDate() + Number(endpoint?.expire_in));
+          res.expireDate = expireDate;
         }
         dispatch(loadingSlice.actions.setLoading(loadingData));
         return res;
@@ -129,7 +143,7 @@ const callApi = apiName => {
         body,
       };
       uniqueAPI_id = GenerateID();
-      const loadingData = {uniqueAPI_id, group_name};
+      const loadingData = { uniqueAPI_id, group_name };
 
       const getLocalStorage = async (apiGroup, endpointKey) => {
         const localstorage = await AsyncStorage.getItem('persist:root');
@@ -146,7 +160,6 @@ const callApi = apiName => {
             const currentDate = new Date();
             const expireDate = new Date(endpointData.expireDate);
             if (currentDate > expireDate) {
-              console.log(currentDate > expireDate, 'persist is expired');
               const asyncThunk = createApiThunk(thunkName, payload);
               dispatch(asyncThunk());
             } else {
