@@ -147,7 +147,7 @@ const callApi = apiName => {
 
       const getLocalStorage = async (apiGroup, endpointKey) => {
         const localstorage = await AsyncStorage.getItem('persist:root');
-        endpointKey = endpointKey + '_data';
+        endpointKey = endpointKey;
         if (localstorage) {
           const parsedLocalStorage = JSON.parse(localstorage);
           const check_data = parsedLocalStorage[apiGroup];
@@ -161,7 +161,7 @@ const callApi = apiName => {
             const expireDate = new Date(endpointData.expireDate);
             if (currentDate > expireDate) {
               const asyncThunk = createApiThunk(thunkName, payload);
-              dispatch(asyncThunk());
+              response = await dispatch(asyncThunk());
             } else {
               console.log(
                 currentDate > expireDate,
@@ -170,17 +170,17 @@ const callApi = apiName => {
             }
           } else {
             const asyncThunk = createApiThunk(thunkName, payload, loadingData);
-            dispatch(asyncThunk());
+            response = await dispatch(asyncThunk());
           }
         } else {
           const asyncThunk = createApiThunk(thunkName, payload, loadingData);
-          dispatch(asyncThunk());
+          response = await dispatch(asyncThunk());
         }
         return uniqueAPI_id;
       };
 
       getLocalStorage(apiGroup, endpointKey);
-      return uniqueAPI_id;
+      return response?.payload;
     },
   };
 
