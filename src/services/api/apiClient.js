@@ -143,6 +143,7 @@ const callApi = apiName => {
         body,
       };
       uniqueAPI_id = GenerateID();
+      let response
       const loadingData = { uniqueAPI_id, group_name };
 
       const getLocalStorage = async (apiGroup, endpointKey) => {
