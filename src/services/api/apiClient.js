@@ -4,12 +4,10 @@ import { selectStore } from '../../redux/util/selectStore';
 import { endpoints } from './endpoints';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GenerateID } from '../../redux/util/GenerateID';
-import { token_endpoint } from '../../helper/setAccessToken';
 import { loadingSlice } from '../../redux/reducers/reducer';
 import callAxios from './axios';
-import { token_key } from '../../helper/setAccessToken';
 import { AccessTokenSlice, ExpireAlertBox } from '../../redux/reducers/reducer';
-import { FindAccessToken } from '../../helper/setAccessToken';
+import { FindAccessToken, token_endpoint, token_key } from '../../helper/setAccessToken';
 
 const callApi = apiName => {
   let uniqueAPI_id = null;
@@ -131,7 +129,7 @@ const callApi = apiName => {
         return e;
       }
     },
-    executeDispatch: () => {
+    executeDispatch: async () => {
       if (missing_AccessToken) return;
 
       const payload = {
@@ -180,7 +178,7 @@ const callApi = apiName => {
         return uniqueAPI_id;
       };
 
-      getLocalStorage(apiGroup, endpointKey);
+      await getLocalStorage(apiGroup, endpointKey);
       return response?.payload;
     },
   };
