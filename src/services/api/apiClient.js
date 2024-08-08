@@ -85,6 +85,7 @@ const callApi = apiName => {
       return apiCall;
     },
     execute: async () => {
+      apiCall.addAccessToken()
       if (missing_AccessToken) return;
       const payload = {
         endpoint,
@@ -130,8 +131,8 @@ const callApi = apiName => {
       }
     },
     executeDispatch: async () => {
+      apiCall.addAccessToken()
       if (missing_AccessToken) return;
-
       const payload = {
         endpoint,
         segment,
@@ -183,7 +184,7 @@ const callApi = apiName => {
     },
   };
 
-  return apiCall.addAccessToken();
+  return apiCall;
 };
 
 export default callApi;
