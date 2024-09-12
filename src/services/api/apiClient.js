@@ -1,13 +1,15 @@
-import { createApiThunk } from '../../redux/reducers/reducer';
-import { dispatchStore } from '../../redux/util/dispatchStore';
-import { selectStore } from '../../redux/util/selectStore';
+import { createApiThunk } from '../../FrameRedux/reducers/reducer';
+import { dispatchStore } from '../../FrameRedux/util/dispatchStore';
+import { selectStore } from '../../FrameRedux/util/selectStore';
 import { endpoints } from './endpoints';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { GenerateID } from '../../redux/util/GenerateID';
-import { loadingSlice } from '../../redux/reducers/reducer';
+import { GenerateID } from '../../FrameRedux/util/GenerateID';
+import { token_endpoint } from '../../FrameHelper/setAccessToken';
+import { loadingSlice } from '../../FrameRedux/reducers/reducer';
 import callAxios from './axios';
-import { AccessTokenSlice, ExpireAlertBox } from '../../redux/reducers/reducer';
-import { FindAccessToken, token_endpoint, token_key } from '../../helper/setAccessToken';
+import { token_key } from '../../FrameHelper/setAccessToken';
+import { AccessTokenSlice, ExpireAlertBox } from '../../FrameRedux/reducers/reducer';
+import { FindAccessToken } from '../../FrameHelper/setAccessToken';
 
 const callApi = apiName => {
   let uniqueAPI_id = null;
@@ -133,6 +135,7 @@ const callApi = apiName => {
     executeDispatch: async () => {
       apiCall.addAccessToken()
       if (missing_AccessToken) return;
+
       const payload = {
         endpoint,
         segment,
@@ -147,7 +150,6 @@ const callApi = apiName => {
 
       const getLocalStorage = async (apiGroup, endpointKey) => {
         const localstorage = await AsyncStorage.getItem('persist:root');
-        endpointKey = endpointKey;
         if (localstorage) {
           const parsedLocalStorage = JSON.parse(localstorage);
           const check_data = parsedLocalStorage[apiGroup];
@@ -156,9 +158,9 @@ const callApi = apiName => {
             endpointData = JSON.parse(check_data)?.[endpointKey];
           }
 
-          if (endpointData && endpointData.expireDate) {
+          if (endpointData && endpointData?.data?.expireDate) {
             const currentDate = new Date();
-            const expireDate = new Date(endpointData.expireDate);
+            const expireDate = new Date(endpointData?.data?.expireDate);
             if (currentDate > expireDate) {
               const asyncThunk = createApiThunk(thunkName, payload);
               response = await dispatchStore(asyncThunk());
